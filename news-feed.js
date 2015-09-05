@@ -27,12 +27,17 @@ var NewsFeed = function(){
   			stream.pipe(feedParser);
 		});
 		
+		var feeds = [];
 		feedParser.on('error', function(error) {
 		  	// always handle errors
 		});
 		feedParser.on('readable', function() {
 		  	// This is where the action is!
-			_this.callbackGetFeed( this );
+		  	feeds.push( this.read() );
+		});
+		feedParser.on('end', function() {
+		  	// This is where the action is!
+			_this.callbackGetFeed( feeds );
 		});
 	};
 	
